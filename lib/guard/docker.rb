@@ -27,6 +27,8 @@ module Guard
     # @return [Object] the task result
     #
     def start
+      system("docker stop guard-#{@image}")
+
       cmd = []
       cmd << 'docker run --rm'
       cmd << "-p #{@host_port}:#{@container_port}"
