@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "guard-docker"
-  spec.version       = '0.0.3'
+  spec.version       = '0.0.3.1'
   spec.authors       = ["Tim Hogg"]
   spec.email         = ["thogg4@gmail.com"]
 

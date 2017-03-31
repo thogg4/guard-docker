@@ -13,10 +13,10 @@ module Guard
     #
     def initialize(options = {})
       
-      @image = options.fetch(:image)
-      @host_port = options.fetch(:host_port)
-      @container_port = options.fetch(:container_port)
-      @env_vars = options.fetch(:env_vars)
+      @image = options.fetch(:image, nil)
+      @host_port = options.fetch(:host_port, nil)
+      @container_port = options.fetch(:container_port, nil)
+      @env_vars = options.fetch(:env_vars, nil)
 
       super
     end
