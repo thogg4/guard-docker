@@ -27,14 +27,19 @@ module Guard
     # @return [Object] the task result
     #
     def start
+      failed 'You must specify an image' unless @image
+      return false unless @image
+
       system("docker stop guard-#{@image}")
 
       cmd = []
       cmd << 'docker run --rm'
-      cmd << "-p #{@host_port}:#{@container_port}"
+      cmd << "-p #{@host_port}:#{@container_port}" if @host_port && @container_port
+
       @env_vars.each do |key, value|
         cmd << "-e #{key}=#{value}"
-      end
+      end if @env_vars
+
       cmd << "--name=guard-#{@image}"
       cmd << @image
 
