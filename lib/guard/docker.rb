@@ -14,6 +14,7 @@ module Guard
     def initialize(options = {})
       
       @image = options.fetch(:image, nil)
+      @tag = options.fetch(:tag, nil)
       @host_port = options.fetch(:host_port, nil)
       @container_port = options.fetch(:container_port, nil)
       @env_vars = options.fetch(:env_vars, nil)
@@ -30,7 +31,7 @@ module Guard
       failed 'You must specify an image' unless @image
       return false unless @image
 
-      system("docker stop guard-#{@image}")
+      stop
 
       cmd = []
       cmd << 'docker run --rm'
@@ -40,8 +41,13 @@ module Guard
         cmd << "-e #{key}=#{value}"
       end if @env_vars
 
-      cmd << "--name=guard-#{@image}"
-      cmd << @image
+      if @tag
+        cmd << "--name=guard-#{@image}-#{@tag}"
+        cmd << "#{@image}:#{@tag}"
+      else
+        cmd << "--name=guard-#{@image}"
+        cmd << @image
+      end
 
       spawn(cmd.join(' '))
 
@@ -55,7 +61,9 @@ module Guard
     #
     def stop
       cmd = []
-      cmd << "docker stop guard-#{@image}"
+      cmd << 'docker stop'
+      cmd << "guard-#{@image}" if !@tag
+      cmd << "guard-#{@image}-#{@tag}" if @tag
       system(cmd.join(' '))
     end
 
